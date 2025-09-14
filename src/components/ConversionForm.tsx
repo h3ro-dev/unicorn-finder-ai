@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { submitLead } from "@/lib/lead";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,8 +22,9 @@ const ConversionForm = () => {
     challenges: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    await submitLead(formData as any);
     toast({
       title: "Welcome to VC of One",
       description: "We'll be in touch within 24 hours to optimize your investment intelligence.",
