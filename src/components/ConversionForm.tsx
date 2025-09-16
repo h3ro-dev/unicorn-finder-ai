@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { notifyLead, utmFromLocation } from "@/lib/notifyLead";
 import { submitLead } from "@/lib/lead";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,6 +26,13 @@ const ConversionForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await submitLead(formData as any);
+    try {
+      const page_url = typeof window !== 'undefined' ? window.location.href : '';
+      const payload = { ...(formData as any), page_url, ...utmFromLocation() };
+      notifyLead("contact", payload);
+    } catch (e) {
+      console.warn('notifyLead skipped', e);
+    }
     toast({
       title: "Welcome to VC of One",
       description: "We'll be in touch within 24 hours to optimize your investment intelligence.",
